@@ -6,13 +6,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        //Saver and Loader, use these to save and load files
+        //Saver and Loader, and scanner, use these to interact with the game
         Loader loader = new Loader();
         Saver saver = new Saver();
-
-        //inputter that will follow the player around, it waits for your inputs
         Scanner scanner = new Scanner(System.in);
-        Inputter inputter = new Inputter(scanner);
+        Inputter inputter = new Inputter(scanner, saver, loader);
 
         //This is the initial boot section, check for saves and see if the user wants to load
         System.out.println("Checking for Saves...");
@@ -22,12 +20,12 @@ public class Main {
             //When the user finally puts in y or n, we can then move on to either loading the save or making a new one
             if(inputter.userConfirmation() == 'y'){
                 //load save and enter the main game
-                Character player = loader.charLoad();
+                Character player = inputter.getLoader().charLoad();
                 mainGame(player, inputter);
                 System.exit(0);
             }else{
                 saver.createSave();
-                Character player = loader.charLoad();
+                Character player = inputter.getLoader().charLoad();
                 mainGame(player, inputter);
                 System.exit(0);
             }
@@ -36,7 +34,7 @@ public class Main {
             if(inputter.userConfirmation() == 'y'){
                 //create save and enter the main game
                 saver.createSave();
-                Character player = loader.charLoad();
+                Character player = inputter.getLoader().charLoad();
                 mainGame(player, inputter);
                 System.exit(0);
             }else{

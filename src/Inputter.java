@@ -4,14 +4,19 @@ import java.util.Scanner;
 public class Inputter {
 
     private Scanner scanner;
-    public Inputter(Scanner scanner){
+    private Saver saver;
+    private Loader loader;
+
+    public Inputter(Scanner scanner, Saver saver, Loader loader){
         this.scanner = scanner;
+        this.saver = saver;
+        this.loader = loader;
     }
 
     public int selection(int max){
         int userInput = 100;
 
-        while(userInput > max || userInput < 0){
+        while(userInput > max || userInput < 1){
             String input = scanner.nextLine();
             userInput = Integer.parseInt(input);
         }
@@ -36,5 +41,14 @@ public class Inputter {
 
     public void close(){
         scanner.close();
+    }
+
+    //leverage both saver and loader right from this class
+    public Saver getSaver(){
+        return saver;
+    }
+
+    public Loader getLoader(){
+        return loader;
     }
 }
