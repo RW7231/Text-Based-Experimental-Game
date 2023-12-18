@@ -15,8 +15,7 @@ public class Saver {
             if(newFile.createNewFile()){
                 System.out.println("Save File Created");
                 characterMaker();
-            }
-            else{
+            } else{
                 newFile.delete();
                 newFile.createNewFile();
                 System.out.println("Save File Created");
@@ -34,8 +33,8 @@ public class Saver {
             FileWriter playerFile = new FileWriter("Save.txt");
             System.out.println("CHARACTER MAKER TEST:");
             String classname = "Test";
-            int level = 0;
-            int currHealth = 0;
+            int level = 1;
+            int currHealth = 1;
             List<Integer> charstats = new ArrayList<>(Collections.nCopies(8, 10));
 
             //write values
@@ -51,5 +50,24 @@ public class Saver {
             System.out.println("Error Making Character");
             e.printStackTrace();
         }
+    }
+
+    //get player save file and write current data to it
+    private void overwriteSave(Character player){
+        try{
+            FileWriter save = new FileWriter("Save.txt");
+            save.write(player.getClassname() + "\n");
+            save.write(String.valueOf(player.getLevel()) +"\n");
+            save.write(player.getCurrentHealth() + "\n");
+            List<Integer> stats = player.getCharstats();
+            for(int i = 0; i < stats.size(); i++){
+                save.write(stats.get(i) + "\n");
+            }
+            save.close();
+        } catch (IOException e){
+            System.out.println("Something has gone wrong");
+            e.printStackTrace();
+        }
+
     }
 }
