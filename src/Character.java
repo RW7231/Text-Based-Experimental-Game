@@ -61,7 +61,7 @@ public class Character {
         if(souls < soulCost){
             System.out.println("You do not have enough souls to level up");
         } else{
-            System.out.println("What would you like to level up? \n  " +
+            System.out.println("What would you like to level up? \n" +
                     "1: Vigor (Increase max health) \n" +
                     "2: Attunement (Increase max number of prepared spells) \n" +
                     "3: Endurance (Increase max health and stamina) \n" +
@@ -100,7 +100,9 @@ public class Character {
                     System.out.println("This shouldn't happen, what...?");
             }
 
-            inputter.getSaver().saveGame(this);
+            level += 1;
+
+            inputter.getSaver().overwriteSave(this);
 
         }
 

@@ -6,9 +6,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Saver {
-    public void saveGame(Character player){
-
-    }
     public void createSave(){
         try{
             File newFile = new File("Save.txt");
@@ -53,7 +50,7 @@ public class Saver {
     }
 
     //get player save file and write current data to it
-    private void overwriteSave(Character player){
+    public void overwriteSave(Character player){
         try{
             FileWriter save = new FileWriter("Save.txt");
             save.write(player.getClassname() + "\n");
