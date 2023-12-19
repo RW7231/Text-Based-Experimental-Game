@@ -1,11 +1,8 @@
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Character {
     private final String classname;
-    private int level, currentHealth;
+    private int level, currentHealth, maxHealth, maxStamina;
 
     //holds vigor, focus, endurance, strength, dex, int, faith, and luck all in that order
     private List<Integer> charstats;
@@ -28,14 +25,35 @@ public class Character {
         this.level = level;
         this.charstats = charstats;
         this.currentHealth = currentHealth;
-        souls = 0;
-        coins = 0;
-        soulCost = 0;
+        calculateMaxHealth();
+        calculateMaxStamina();
+        this.souls = 0;
+        this.coins = 0;
+        calculateSoulCost();
+    }
+
+    //I think this is a fair progression, allows for quick early levels but high cost later levels
+    private void calculateSoulCost(){
+        this.soulCost = (int) (Math.log(this.level) * (this.level * this.level)) + 100;
+    }
+
+    private void calculateMaxHealth(){
+        this.maxHealth = ((level * 2) + (charstats.get(0) * 30) + (charstats.get(2) * 10));
+    }
+
+    //player will constantly gain more stamina up until around 40 endurance
+    private void calculateMaxStamina(){
+        this.maxStamina = 0;
+        for(int i = 1; i <= charstats.get(2); i++){
+            this.maxStamina += (int) -((charstats.get(2) * charstats.get(2)) / 550.0) + 4;
+        }
     }
 
     //prints out the character's current stats
-    void currentStatus(){
-
+    private void currentStatus(){
+        System.out.println("Current Status:\n" +
+                "Class: " + classname + "\n" +
+                "Health: " + currentHealth);
     }
 
     public String getClassname(){
@@ -57,7 +75,7 @@ public class Character {
     //Levels the player up
     void levelUp(Inputter inputter){
         System.out.println("You find the opportunity to focus your mind and channel the power of souls to enhance your abilities \n" +
-                "You have " + souls + " souls in your possession, you need 0 souls to level up");
+                "You have " + souls + " souls in your possession, you need " + soulCost + " souls to level up");
         if(souls < soulCost){
             System.out.println("You do not have enough souls to level up");
         } else{
@@ -69,9 +87,10 @@ public class Character {
                     "5: Dexterity (Increase damage with finesse weapons) \n" +
                     "6: Intelligence (Increase sorcery power) \n" +
                     "7: Faith (Increase miracle power) \n" +
-                    "8: Luck (Makes you better at everything) \n");
+                    "8: Luck (Makes you better at everything) \n" +
+                    "9: Don't level up");
 
-            switch (inputter.selection(8)){
+            switch (inputter.selection(9)){
                 case 1:
                     charstats.set(0, charstats.get(0) + 1);
                     break;
@@ -80,6 +99,7 @@ public class Character {
                     break;
                 case 3:
                     charstats.set(2, charstats.get(2) + 1);
+                    calculateMaxStamina();
                     break;
                 case 4:
                     charstats.set(3, charstats.get(3) + 1);
@@ -96,13 +116,18 @@ public class Character {
                 case 8:
                     charstats.set(7, charstats.get(7) + 1);
                     break;
+                case 9:
+                    return;
                 default:
                     System.out.println("This shouldn't happen, what...?");
             }
 
-            level += 1;
+            this.level += 1;
 
             inputter.getSaver().overwriteSave(this);
+            calculateSoulCost();
+            calculateMaxHealth();
+
 
         }
 

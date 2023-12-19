@@ -30,6 +30,7 @@ public class Loader {
             e.printStackTrace();
         }
 
+        //finally, create and return the player
         Character player = new Character(classname, level, charstats, currentHealth);
 
         return player;
