@@ -61,6 +61,7 @@ public class Main {
                     CombatHandler handler = new CombatHandler(player, testMonster);
                     if(handler.combatMode(inputter)){
                         System.out.println("You have successfully survived your encounter!\n");
+                        inputter.getSaver().overwriteSave(player);
                     } else{
                         System.out.println("How unfortunate...\n" +
                                 "Do not fret, you are not the only one to be murdered suddenly, these things happen\n" +
