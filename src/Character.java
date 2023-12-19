@@ -1,14 +1,17 @@
 import java.util.List;
 
 public class Character {
-    private final String classname;
-    private int level, currentHealth, maxHealth, maxStamina;
+    String classname;
+    int level, currentHealth, maxHealth, maxStamina;
 
     //holds vigor, focus, endurance, strength, dex, int, faith, and luck all in that order
-    private List<Integer> charstats;
+    List<Integer> charstats;
 
     //use this for defensive properties, chance to dodge/ignore hit and damage received if hit
     int AC, Defense;
+
+    //combat properties, how much damage do you do when you hit?
+    int attack;
 
     //use these for currencies, i'll just leave them at 0 for now
     //for debug purposes
@@ -27,6 +30,9 @@ public class Character {
         this.currentHealth = currentHealth;
         calculateMaxHealth();
         calculateMaxStamina();
+        calculateDefense();
+        calculateAC();
+        this.attack = 100;
         this.souls = 0;
         this.coins = 0;
         calculateSoulCost();
@@ -49,27 +55,19 @@ public class Character {
         }
     }
 
+    private void calculateDefense(){
+        this.Defense = ((this.level * 2) + (this.charstats.get(2) * 3));
+    }
+
+    private void calculateAC(){
+        this.AC = 10 + this.charstats.get(4)/10;
+    }
+
     //prints out the character's current stats
     private void currentStatus(){
         System.out.println("Current Status:\n" +
                 "Class: " + classname + "\n" +
                 "Health: " + currentHealth);
-    }
-
-    public String getClassname(){
-        return classname;
-    }
-
-    public int getLevel(){
-        return level;
-    }
-
-    public int getCurrentHealth(){
-        return currentHealth;
-    }
-
-    public List<Integer> getCharstats(){
-        return charstats;
     }
 
     //Levels the player up

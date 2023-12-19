@@ -53,10 +53,10 @@ public class Saver {
     public void overwriteSave(Character player){
         try{
             FileWriter save = new FileWriter("Save.txt");
-            save.write(player.getClassname() + "\n");
-            save.write(String.valueOf(player.getLevel()) +"\n");
-            save.write(player.getCurrentHealth() + "\n");
-            List<Integer> stats = player.getCharstats();
+            save.write(player.classname + "\n");
+            save.write(String.valueOf(player.level) +"\n");
+            save.write(player.currentHealth + "\n");
+            List<Integer> stats = player.charstats;
             for(int i = 0; i < stats.size(); i++){
                 save.write(stats.get(i) + "\n");
             }

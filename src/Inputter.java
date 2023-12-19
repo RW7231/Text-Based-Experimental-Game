@@ -51,4 +51,6 @@ public class Inputter {
     public Loader getLoader(){
         return loader;
     }
+
+    public Scanner getScanner(){ return scanner; }
 }

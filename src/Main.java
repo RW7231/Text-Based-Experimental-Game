@@ -57,7 +57,18 @@ public class Main {
 
             switch (userInput){
                 case 1:
-                    Monster testMonster = new Monster(100, 100, 10, 100,1);
+                    Monster testMonster = new Monster(100, 100, 10, 100,1, 100);
+                    CombatHandler handler = new CombatHandler(player, testMonster);
+                    if(handler.combatMode(inputter)){
+                        System.out.println("You have successfully survived your encounter!\n");
+                    } else{
+                        System.out.println("How unfortunate...\n" +
+                                "Do not fret, you are not the only one to be murdered suddenly, these things happen\n" +
+                                "GAME OVER");
+                        inputter.getScanner().nextLine();
+                        wannaPlay = false;
+                        inputter.getSaver().overwriteSave(player);
+                    }
                     System.out.println("Not Yet Implemented");
                     break;
                 case 2:
