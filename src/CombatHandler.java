@@ -141,6 +141,9 @@ public class CombatHandler {
         return totalDamage;
     }
 
+    //this is a function that determines a monster's turn. The "time" value represents how long an action takes
+    //attacks have placeholder values for time (1 for light and 2 for heavy)
+    //these are placeholders until equipment becomes my priority
     private void monsterTurn(int time){
         if(foe.monsterTime(time)){
             if(doesAttackHit(player.AC)){
