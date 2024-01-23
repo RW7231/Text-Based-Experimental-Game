@@ -22,7 +22,7 @@ public class Character {
     int soulCost;
 
     //when the character is loaded from the save file, I will get them set up
-    public Character(String classname, int level, List<Integer> charstats, int currentHealth){
+    public Character(String classname, int level, List<Integer> charstats, int currentHealth, int souls){
         //save the classname, level, the stats (in an array), and health
         this.classname = classname;
         this.level = level;
@@ -33,7 +33,7 @@ public class Character {
         calculateDefense();
         calculateAC();
         this.attack = 100;
-        this.souls = 0;
+        this.souls = souls;
         this.coins = 0;
         calculateSoulCost();
     }
@@ -121,10 +121,12 @@ public class Character {
             }
 
             this.level += 1;
+            this.souls -= soulCost;
 
-            inputter.getSaver().overwriteSave(this);
             calculateSoulCost();
             calculateMaxHealth();
+            this.currentHealth = this.maxHealth;
+            inputter.getSaver().overwriteSave(this);
 
 
         }

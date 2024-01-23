@@ -31,8 +31,10 @@ public class Saver {
             System.out.println("CHARACTER MAKER TEST:");
             String classname = "Test";
             int level = 1;
-            int currHealth = 1;
             List<Integer> charstats = new ArrayList<>(Collections.nCopies(8, 10));
+
+            //stopping player from being made with 1 hp, but don't want to hard code the number
+            int currHealth = ((level * 2) + (charstats.get(0) * 30) + (charstats.get(2) * 10));
 
             //write values
             playerFile.write(classname + "\n");
@@ -41,6 +43,10 @@ public class Saver {
             for(int i = 0; i < charstats.size(); i++){
                 playerFile.write(String.valueOf(charstats.get(i)) + "\n");
             }
+
+            //add in souls now
+            playerFile.write(String.valueOf(0));
+
             playerFile.close();
 
         }catch (IOException e){
@@ -55,11 +61,23 @@ public class Saver {
             FileWriter save = new FileWriter("Save.txt");
             save.write(player.classname + "\n");
             save.write(String.valueOf(player.level) +"\n");
-            save.write(player.currentHealth + "\n");
+
+            //new check, if player is dead save with full health
+            if(player.currentHealth <= 0){
+                save.write(player.maxHealth);
+            }
+            //otherwise save with current health
+            else{
+                save.write(player.currentHealth + "\n");
+            }
+
             List<Integer> stats = player.charstats;
             for(int i = 0; i < stats.size(); i++){
                 save.write(stats.get(i) + "\n");
             }
+
+            save.write(player.souls + "\n");
+
             save.close();
         } catch (IOException e){
             System.out.println("Something has gone wrong");

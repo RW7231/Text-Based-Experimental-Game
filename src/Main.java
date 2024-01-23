@@ -64,7 +64,7 @@ public class Main {
                         inputter.getSaver().overwriteSave(player);
                     } else{
                         System.out.println("How unfortunate...\n" +
-                                "Do not fret, you are not the only one to be murdered suddenly, these things happen\n" +
+                                "Do not fret, these things happen\n" +
                                 "GAME OVER");
                         inputter.getScanner().nextLine();
                         wannaPlay = false;

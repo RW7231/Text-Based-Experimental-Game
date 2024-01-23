@@ -18,13 +18,22 @@ public class CombatHandler {
                     "1. Light Attack\n" +
                     "2. Heavy Attack\n" +
                     "3. Take a moment to catch your breath\n" +
-                    "4. Run while you can\n");
+                    "4. Evade\n" +
+                    "5. Parry\n" +
+                    "6. Run while you can\n");
 
-            int playerChoice = inputter.selection(4);
+            System.out.println("Your Current Stats:\n" +
+                    "Health: " + player.currentHealth + "/" + player.maxHealth + "\n" +
+                    "Stamina: " + playerStam + "/" + player.maxStamina + "\n");
+
+            System.out.println("Debug: Time until monster turn\n" + foe.CurrentRoll);
+
+            int playerChoice = inputter.selection(6);
 
             switch(playerChoice){
                 case 1:
                     if(playerStam >= 10){
+                        monsterTurn(1);
                         if(doesAttackHit(foe.AC)){
                             System.out.println("You strike your foe, dealing " + playerAttack(player.attack) + " damage\n");
                         } else{
@@ -36,7 +45,9 @@ public class CombatHandler {
                     }
                     break;
                 case 2:
+
                     if(playerStam >= 20){
+                        monsterTurn(2);
                         if(doesAttackHit(foe.AC)){
                             System.out.println("You strike your foe, dealing " + playerAttack((int) (player.attack * 1.5)) + " damage\n");
                         } else{
@@ -48,21 +59,56 @@ public class CombatHandler {
                     }
                     break;
                 case 3:
+                    monsterTurn(5);
                     playerStam += 30;
                     break;
                 case 4:
+                    if(playerStam >= 10){
+                        if(foe.monsterTime(5)){
+                            System.out.println("But you anticipated this, you easily jump out of the way!\n");
+                        } else{
+                            System.out.println("You evade away from the monster, but no attack comes...\n");
+                        }
+                        playerStam -= 10;
+                    } else{
+                        System.out.println("You are too tired to jump out of the way!\n");
+                    }
+
+                    break;
+                case 5:
+                    if(playerStam >= 10){
+                        if(foe.monsterTime(1)){
+                            System.out.println("You perfectly deflect your foe's blow, knocking them off balance!\n");
+                            foe.CurrentRoll = foe.CurrentRoll*2;
+                        } else{
+                            System.out.println("You tense up, raising your defenses in anticipation for an attack... but nothing happens\n");
+                        }
+                        playerStam -= 10;
+                    } else{
+                        System.out.println("You are too tired to protect yourself!\n");
+                    }
+                    break;
+                case 6:
                     if(playerStam <= 50){
                         System.out.println("You don't have enough endurance to outrun this thing!\n");
                     } else if (doWeRun()) {
-                        System.out.println("You start to run,,, and you think you did it! \n");
-                        return true;
+                        monsterTurn(10);
+                        if(player.currentHealth >= 1){
+                            System.out.println("You start to run,,, and you think you did it! \n");
+                            return true;
+                        } else{
+                            System.out.println("You start to run... but something is wrong...\n");
+                        }
                     }
                     break;
                 default:
                     System.out.println("This is not a valid choice\n");
             }
 
-            if(foe.Health <= 0){
+            if (player.currentHealth <= 0) {
+                System.out.println("You collapse in a pool of your own blood");
+                return false;
+            } else if(foe.Health <= 0){
                 player.souls += foe.soulValue;
                 return true;
             }
@@ -93,5 +139,15 @@ public class CombatHandler {
         player.currentHealth -= totalDamage;
 
         return totalDamage;
+    }
+
+    private void monsterTurn(int time){
+        if(foe.monsterTime(time)){
+            if(doesAttackHit(player.AC)){
+                System.out.println("The monster attacks you for " + monsterAttack() + " damage!\n");
+            } else{
+                System.out.println("But you manage to evade at last minute!");
+            }
+        }
     }
 }

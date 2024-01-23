@@ -13,6 +13,7 @@ public class Loader {
         int level = 0;
         int currentHealth = 0;
         List<Integer> charstats = new ArrayList<>(8);
+        int souls = 0;
 
         //read the file
         try {
@@ -25,13 +26,16 @@ public class Loader {
             for(int i = 0; i < 8; i ++){
                 charstats.add(i, filereader.nextInt());
             }
+
+            souls = filereader.nextInt();
+
         }catch (FileNotFoundException e){
             System.out.println("File could not be found");
             e.printStackTrace();
         }
 
         //finally, create and return the player
-        Character player = new Character(classname, level, charstats, currentHealth);
+        Character player = new Character(classname, level, charstats, currentHealth, souls);
 
         return player;
 
